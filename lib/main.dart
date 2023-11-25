@@ -1,4 +1,4 @@
-import 'package:awesome_quiz_app/controllers/home_controller.dart';
+import 'package:awesome_quiz_app/controllers/navigation_controller.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Flutter Demo',
-      home: HomeController(),
+      home: NavigationController(),
     );
   }
 }
