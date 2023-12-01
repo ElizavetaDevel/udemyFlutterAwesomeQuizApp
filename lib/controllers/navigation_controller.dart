@@ -1,12 +1,11 @@
 import 'package:awesome_quiz_app/base_ui/gradient_container.dart';
 import 'package:awesome_quiz_app/controllers/home_controller.dart';
 import 'package:awesome_quiz_app/controllers/quiz_controller.dart';
+import 'package:awesome_quiz_app/data/questions.dart';
+import 'package:awesome_quiz_app/widgets/results_widget.dart';
 import 'package:flutter/material.dart';
 
-enum Screen {
-  home,
-  quiz,
-}
+enum Screen { home, quiz, results }
 
 class NavigationController extends StatefulWidget {
   const NavigationController({super.key});
@@ -23,9 +22,28 @@ class _NavigationControllerState extends State<NavigationController> {
 
   Screen activeScreen = Screen.home;
 
+  List<String> selectedAnswers = [];
+
   void onStartPressed() {
     setState(() {
       activeScreen = Screen.quiz;
+    });
+  }
+
+  void onSelectAnswer(String answer) {
+    selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        activeScreen = Screen.results;
+      });
+    }
+  }
+
+  void restart() {
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = Screen.home;
     });
   }
 
@@ -34,7 +52,12 @@ class _NavigationControllerState extends State<NavigationController> {
       case Screen.home:
         return HomeController(onStartPressed);
       case Screen.quiz:
-        return const QuizController();
+        return QuizController(onSelectAnswer: onSelectAnswer);
+      case Screen.results:
+        return ResultsWidget(
+          answers: selectedAnswers,
+          restart: restart,
+        );
     }
   }
 
